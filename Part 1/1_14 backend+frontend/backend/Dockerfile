@@ -12,7 +12,7 @@ RUN go build .
 
 
 # Default port is 8080
-ENV PORT=8000
+ENV PORT=8080
 EXPOSE $PORT
 
 
