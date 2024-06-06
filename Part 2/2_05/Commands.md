@@ -1,5 +1,3 @@
-# Exercise 2.5 Solution
-
 ## Steps I Followed
 
 1. **Modified the `docker-compose.yml` file:**
