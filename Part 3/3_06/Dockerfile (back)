@@ -1,0 +1,26 @@
+# Use golang 1.16 base image
+FROM golang:1.16
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the source code into the container
+COPY . .
+
+# Build the project
+RUN go build . &&  \ 
+    useradd -m appuser &&  \ 
+    chown -R appuser . && \
+    apt-get purge -y --auto-remove curl && \
+    rm -rf /var/lib/apt/lists/*
+
+
+USER appuser
+
+EXPOSE 8000
+
+# Set default values for environment variables
+ENV REQUEST_ORIGIN=https://example.com
+
+# Command to run the executable
+CMD ["./server"]

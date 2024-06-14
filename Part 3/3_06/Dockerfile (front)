@@ -1,0 +1,26 @@
+# Use a base image with Node.js installed
+FROM node:16
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json for dependencies
+COPY package*.json ./
+
+COPY . .
+
+ENV REACT_APP_BACKEND_URL=http://localhost/api
+
+RUN npm install && \
+    npm run build && \
+    npm install -g serve && \
+    useradd -m appuser && \ 
+    chown -R appuser /app && \
+    apt-get purge -y --auto-remove curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Switch to the appuser
+USER appuser
+
+# Serve the project on port 5000
+CMD ["serve", "-s", "-l", "5000", "build"]
