@@ -1,0 +1,28 @@
+# Use golang 1.16 base image
+FROM golang:1.16-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the source code into the container
+COPY . .
+
+# Build the project
+RUN apk update && \
+    apk add --no-cache build-base && \
+    go build . && \
+    adduser -D appuser &&  \ 
+    chown appuser . && \
+    apk del gcc libc-dev && \
+    rm -rf /var/cache/apk/*
+
+
+USER appuser
+
+EXPOSE 8000
+
+# Set default values for environment variables
+ENV REQUEST_ORIGIN=https://example.com
+
+# Command to run the executable
+CMD ["./server"]
